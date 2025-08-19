@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mutsa.backend.Users.entity.Users;
+import mutsa.backend.Users.repository.UsersRepository;
 import mutsa.backend.Visa.dto.request.ai.AiMessage;
 import mutsa.backend.Visa.dto.request.ai.AiRequest;
 import mutsa.backend.Visa.dto.request.ai.AiResponse;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 public class VisaService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final VisaRepository visaRepository;
+    private final UsersRepository usersRepository;
     private final VisaPrompt visaPrompt;
     @Value("${gpt.api.key}")
     private String apiKey;
@@ -38,14 +41,14 @@ public class VisaService {
     public String getPromptWithVisa(BasicInfo basic, WithVisaInfo visa) {
         String prompt= visaPrompt.withVisaPromt(basic, visa);
         String result = callApi(prompt);
-        visaToDB(parseVisas(result));
+        visaToDB(parseVisas(result), basic.getUserId());
         return result;
     }
 
     public String getPromptWithoutVisa(BasicInfo basic, WithoutVisaInfo visa) {
         String prompt= visaPrompt.withoutVisaPromt(basic, visa);
         String result = callApi(prompt);
-        visaToDB(parseVisas(result));
+        visaToDB(parseVisas(result), basic.getUserId());
         return result;
     }
 
@@ -79,7 +82,10 @@ public class VisaService {
                 .getMessage()
                 .getContent();
     }
-    public void visaToDB(List<VisaResponse> visas) {
+    public void visaToDB(List<VisaResponse> visas, Long userId) {
+        Users user = usersRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+
         List<Visa> visaList = visas.stream()
                 .map(dto -> Visa.builder()
                         .name(dto.getName())
@@ -87,6 +93,7 @@ public class VisaService {
                         .description(dto.getDescription())
                         .warning(dto.getCautions() != null ? String.join(", ", dto.getCautions()) : null)
                         .createdAt(LocalDateTime.now())
+                        .user(user)
                         .build())
                 .collect(Collectors.toList());
         visaRepository.saveAll(visaList);

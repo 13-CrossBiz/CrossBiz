@@ -1,9 +1,10 @@
 package mutsa.backend.Users.entity;
 import jakarta.persistence.Entity;
-
 import jakarta.persistence.*;
 import lombok.*;
 import mutsa.backend.Visa.entity.Visa;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,9 +18,8 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "visa_id")
-    private Visa visa;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Visa> visas = new ArrayList<>();
     private String passwordHash;
     private String name;
     private Long age;
