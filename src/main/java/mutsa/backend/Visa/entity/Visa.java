@@ -17,7 +17,6 @@ public class Visa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "visa_id")
     private Long visaId;
 
     private String name;
@@ -26,4 +25,5 @@ public class Visa {
     private String description;
     private LocalDateTime startAt;
     private LocalDateTime endAt;
+    private LocalDateTime createdAt;
 }
