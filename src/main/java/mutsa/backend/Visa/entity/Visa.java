@@ -23,7 +23,5 @@ public class Visa {
     private String visaReason;
     private String warning;
     private String description;
-    private LocalDateTime startAt;
-    private LocalDateTime endAt;
     private LocalDateTime createdAt;
 }
