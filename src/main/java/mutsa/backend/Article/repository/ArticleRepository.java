@@ -1,4 +1,9 @@
 package mutsa.backend.Article.repository;
 
-public interface ArticleRepository {
+import mutsa.backend.Article.entity.Article;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ArticleRepository extends JpaRepository<Article, Long> {
+    Page<Article> findAll(Pageable pageable);
 }

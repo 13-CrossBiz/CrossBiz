@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.*;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.http.HttpMethod;
 
 @Configuration
 @RequiredArgsConstructor
@@ -27,7 +28,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(m -> m.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/users/signup/basic", "/api/users/signup/detail", "/api/users/auth/login").permitAll()
+                        // 공개 엔드포인트
+                        .requestMatchers("/api/users/signup/basic", "/api/users/auth/login").permitAll()
+                        // 게시글/댓글 조회는 공개(GET만)
+                        .requestMatchers(HttpMethod.GET, "/api/articles/**").permitAll()
+                        // 그 외는 인증 필요
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, userDetailsService),
