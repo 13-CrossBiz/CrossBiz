@@ -1,4 +1,5 @@
 package mutsa.backend.Visa.service;
+<<<<<<< HEAD
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -122,4 +123,8 @@ public class VisaService {
         }
         return cleaned;
     }
+=======
+
+public class VisaService {
+>>>>>>> feat/users
 }

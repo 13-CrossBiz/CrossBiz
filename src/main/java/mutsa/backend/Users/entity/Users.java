@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Table(name="users")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -20,15 +21,28 @@ public class Users {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Visa> visas = new ArrayList<>();
+    @Column(nullable = false, unique = true, length = 50)
+    private String loginId;
+    @Column(nullable = false, length = 100)
     private String passwordHash;
+    @Column(nullable = false, length = 50)
     private String name;
-    private Long age;
+    @Column(nullable = false)
+    private int age;
     private String bizStatus;
+    @Column(nullable = false, length = 50)
     private String nationality;
-    private String status;          // TODO: 체류 자격 (enum 전환)
-    private String bizCategory;     // (enum 전환)
-    private Long estimatePeriod;            // 예상 체류기간
-    private Long workExperience;
-    private String degree;          // TODO: 학력 (enum 전환)
-    private String koreanLevel;     // TOPIK 등급/기타
+
+    @Column(nullable = false, length = 50)
+    private String status;
+    // 선택 (nullable)
+    @Column(length = 50)
+    private String bizCategory;   // 체류자격
+    @Column(length = 50)
+    private String period;        // 예상 체류 기간
+    private Integer workExperience; // 근무 경력(년수) – null 허용
+    @Column(length = 50)
+    private String degree;
+    @Column(length = 50)
+    private String koreanLevel;
 }

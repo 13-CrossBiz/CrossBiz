@@ -28,19 +28,19 @@ public class VisaController {
     @GetMapping("/place")
     public ResponseEntity<List<NearPlaceDto>> calcululateDistance(
             @RequestParam double lat,
-            @RequestParam double lon)
-    {
+            @RequestParam double lon) {
         return ResponseEntity.ok(visaPlaceService.calculateDistance(lat, lon));
     }
+
     @PostMapping("/recommend/with")
     public ResponseEntity<String> recommendWithVisa(
-            @RequestBody VisaRequestDto dto)
-    {
+            @RequestBody VisaRequestDto dto) {
         BasicInfo basic = dto.getBasicInfo();
         WithVisaInfo visa = dto.getWithVisaInfo();
         String prompt = visaService.getPromptWithVisa(basic, visa);
         return ResponseEntity.ok(prompt);
     }
+
     @PostMapping("/recommend/without")
     public ResponseEntity<String> recommendWithoutVisa(
             @RequestBody VisaRequestDto dto
@@ -50,8 +50,9 @@ public class VisaController {
         String prompt = visaService.getPromptWithoutVisa(basic, visa);
         return ResponseEntity.ok(prompt);
     }
+
     @GetMapping("/history")
-    public ResponseEntity<List<VisaHistory>> visaHistory(@RequestParam Long userId){
+    public ResponseEntity<List<VisaHistory>> visaHistory(@RequestParam Long userId) {
         List<Visa> visas = visaRepository.findByUser_UserId(userId);
         List<VisaHistory> result = visas.stream()
                 .map(visa -> VisaHistory.builder()
@@ -61,6 +62,4 @@ public class VisaController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(result);
     }
-
-
 }
