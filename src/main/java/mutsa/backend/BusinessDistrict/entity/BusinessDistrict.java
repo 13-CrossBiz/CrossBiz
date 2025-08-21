@@ -16,5 +16,13 @@ public class BusinessDistrict {
     private String dong;
     @Column(precision = 20, scale = 2,nullable = true)
     private Long salesAmount;
+    private Long totalPPl;
+    private Long ppl0006;
+    private Long ppl0611;
+    private Long ppl1114;
+    private Long ppl1417;
+    private Long ppl1721;
+    private Long ppl2124;
+
 
 }

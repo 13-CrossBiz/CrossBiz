@@ -14,7 +14,7 @@ import java.util.List;
 public class BusinessService {
     private final BusinessRepository repo;
 
-    // n위 1건
+    // n위
     public BusinessRankResponse getRank(String dong, int rank) {
         if (rank < 1) {
             throw new IllegalArgumentException("rank over 1");

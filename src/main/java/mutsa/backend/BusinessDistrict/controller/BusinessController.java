@@ -2,6 +2,7 @@ package mutsa.backend.BusinessDistrict.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mutsa.backend.BusinessDistrict.dto.BusinessPplResponse;
 import mutsa.backend.BusinessDistrict.dto.BusinessRankResponse;
 import mutsa.backend.BusinessDistrict.service.BusinessService;
 import org.springframework.web.bind.annotation.*;
