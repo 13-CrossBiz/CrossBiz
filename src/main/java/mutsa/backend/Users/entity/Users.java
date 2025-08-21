@@ -20,12 +20,13 @@ public class Users {
     private Long userId;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Visa> visas = new ArrayList<>();
     @Column(nullable = false, unique = true, length = 50)
     private String loginId;
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 255)
     private String passwordHash;
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 255)
     private String name;
     @Column(nullable = false)
     private int age;

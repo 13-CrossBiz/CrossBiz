@@ -3,6 +3,7 @@ package mutsa.backend.security;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import mutsa.backend.Users.dto.UserDTO;
 import mutsa.backend.Users.service.CustomUserDetailsService;
 import org.springframework.security.core.context.SecurityContextHolder;

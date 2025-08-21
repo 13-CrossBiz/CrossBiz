@@ -27,6 +27,7 @@ public class Article {
     private String content;
 
     @Column(nullable = false)
+    @Builder.Default
     private Long view = 0L;
 
     @CreationTimestamp
@@ -35,6 +36,7 @@ public class Article {
 
     // DB 컬럼명은 정확히 like. 예약어 충돌 방지 위해 따옴표 인용.
     @Column(name = "\"like\"", nullable = false)
+    @Builder.Default
     private Long likeCount = 0L;
 
     @PrePersist

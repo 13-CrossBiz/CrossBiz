@@ -14,6 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.*;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.http.HttpMethod;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @RequiredArgsConstructor
@@ -26,10 +29,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                .cors(cors->{})
                 .sessionManagement(m -> m.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // 공개 엔드포인트
                         .requestMatchers("/api/users/signup/basic", "/api/users/auth/login").permitAll()
+//                        .requestMatchers("/api/business", "/api/business/**").permitAll()
                         // 게시글/댓글 조회는 공개(GET만)
                         .requestMatchers(HttpMethod.GET, "/api/articles/**").permitAll()
                         // 그 외는 인증 필요
@@ -40,6 +46,18 @@ public class SecurityConfig {
 
         return http.build();
     }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration c = new CorsConfiguration();
+        c.addAllowedOriginPattern("*");   // 운영에선 구체 도메인으로 제한
+        c.addAllowedHeader("*");
+        c.addAllowedMethod("*");
+        c.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource s = new UrlBasedCorsConfigurationSource();
+        s.registerCorsConfiguration("/**", c);
+        return s;
+    }
 
     @Bean public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 
@@ -47,4 +65,5 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration cfg) throws Exception {
         return cfg.getAuthenticationManager();
     }
+
 }

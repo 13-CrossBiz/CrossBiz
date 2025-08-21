@@ -1,5 +1,4 @@
 package mutsa.backend.Visa.service;
-<<<<<<< HEAD
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,20 +39,20 @@ public class VisaService {
 
 
     public String getPromptWithVisa(BasicInfo basic, WithVisaInfo visa) {
-        String prompt= visaPrompt.withVisaPromt(basic, visa);
+        String prompt = visaPrompt.withVisaPromt(basic, visa);
         String result = callApi(prompt);
         visaToDB(parseVisas(result), basic.getUserId());
         return result;
     }
 
     public String getPromptWithoutVisa(BasicInfo basic, WithoutVisaInfo visa) {
-        String prompt= visaPrompt.withoutVisaPromt(basic, visa);
+        String prompt = visaPrompt.withoutVisaPromt(basic, visa);
         String result = callApi(prompt);
         visaToDB(parseVisas(result), basic.getUserId());
         return result;
     }
 
-    public String callApi(String prompt){
+    public String callApi(String prompt) {
         AiRequest request = new AiRequest();
         request.setModel("gpt-4o");
         request.setTemperature(0.7);
@@ -83,6 +82,7 @@ public class VisaService {
                 .getMessage()
                 .getContent();
     }
+
     public void visaToDB(List<VisaResponse> visas, Long userId) {
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
@@ -99,17 +99,20 @@ public class VisaService {
                 .collect(Collectors.toList());
         visaRepository.saveAll(visaList);
     }
+
     public List<VisaResponse> parseVisas(String json) {
         try {
             String cleanJson = sanitizeJson(json);
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode root = objectMapper.readTree(cleanJson);
             JsonNode visaArray = root.path("recommendedVisas");
-            return objectMapper.readerFor(new TypeReference<List<VisaResponse>>() {}).readValue(visaArray);
+            return objectMapper.readerFor(new TypeReference<List<VisaResponse>>() {
+            }).readValue(visaArray);
         } catch (Exception e) {
             throw new RuntimeException("recommendedVisas parsing failed", e);
         }
     }
+
     public String sanitizeJson(String rawJson) {
         if (rawJson == null) return "";
         String cleaned = rawJson.replaceAll("(?i)```json", "")
@@ -123,8 +126,4 @@ public class VisaService {
         }
         return cleaned;
     }
-=======
-
-public class VisaService {
->>>>>>> feat/users
 }

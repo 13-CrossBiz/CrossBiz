@@ -1,5 +1,4 @@
 package mutsa.backend.Visa.entity;
-<<<<<<< HEAD
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,8 +24,4 @@ public class Visa {
     private String warning;
     private String description;
     private LocalDateTime createdAt;
-=======
-
-public class Visa {
->>>>>>> feat/users
 }
