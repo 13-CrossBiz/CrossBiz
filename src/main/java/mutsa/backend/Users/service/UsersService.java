@@ -39,11 +39,11 @@ public class UsersService {
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
 
-        if (req.getBizCategory() != null)   user.setBizCategory(req.getBizCategory());
-        if (req.getPeriod() != null)        user.setPeriod(req.getPeriod());
-        if (req.getWorkExperience() != null)user.setWorkExperience(req.getWorkExperience());
-        if (req.getDegree() != null)        user.setDegree(req.getDegree());
-        if (req.getKoreanLevel() != null)   user.setKoreanLevel(req.getKoreanLevel());
+        if (req.getBizCategory() != null)       user.setBizCategory(req.getBizCategory());
+        if (req.getEstimatePeriod() != null)    user.setEstimatePeriod(req.getEstimatePeriod());
+        if (req.getWorkExperience() != null)    user.setWorkExperience(req.getWorkExperience());
+        if (req.getDegree() != null)            user.setDegree(req.getDegree());
+        if (req.getKoreanLevel() != null)       user.setKoreanLevel(req.getKoreanLevel());
 
         return user; // dirty checking으로 업데이트 반영
     }

@@ -33,12 +33,13 @@ public class Users {
 
     // 선택 (nullable)
     @Column(length = 50)
-    private String bizCategory;   // 체류자격
+    private String bizCategory; // 체류자격
 
     @Column(length = 50)
-    private String period;        // 예상 체류 기간
+    private String estimatePeriod; // 예상 체류 기간
 
-    private Integer workExperience; // 근무 경력(년수) – null 허용
+    @Column(length = 50)
+    private String workExperience; // 근무 경력(년수) – null 허용
 
     @Column(length = 50)
     private String degree;
