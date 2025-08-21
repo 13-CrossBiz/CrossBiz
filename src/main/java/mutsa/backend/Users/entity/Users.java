@@ -28,9 +28,8 @@ public class Users {
     private String passwordHash;
     @Column(nullable = false, length = 255)
     private String name;
-    @Column(nullable = false)
-    private int age;
-    private String bizStatus;
+    @Column(nullable = false, length = 20)
+    private String age;
     @Column(nullable = false, length = 50)
     private String nationality;
 

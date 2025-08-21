@@ -10,7 +10,7 @@ public class UserResponse {
     private Long userId;
     private String loginId;
     private String name;
-    private int age;
+    private String age;
     private String nationality;
     private String status;
     private String bizCategory;
