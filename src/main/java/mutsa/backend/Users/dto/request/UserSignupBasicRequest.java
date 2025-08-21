@@ -19,8 +19,8 @@ public class UserSignupBasicRequest {
     @NotBlank
     private String name;
 
-    @Min(0)
-    private int age;
+    @NotBlank
+    private String age;
 
     @NotBlank
     private String nationality;

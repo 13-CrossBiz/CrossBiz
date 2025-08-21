@@ -22,9 +22,8 @@ public class Users {
     @Column(nullable = false, length = 50)
     private String name;
 
-    // int 그대로 둬도 되지만, 0 허용이 애매하면 Integer로 바꿔도 됨
-    @Column(nullable = false)
-    private int age;
+    @Column(nullable = false, length = 20)
+    private String age;
 
     @Column(nullable = false, length = 50)
     private String nationality;
