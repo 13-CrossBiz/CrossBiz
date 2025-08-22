@@ -14,8 +14,8 @@ public class UserResponse {
     private String nationality;
     private String status;
     private String bizCategory;
-    private String period;
-    private int workExperience;
+    private String estimatePeriod;
+    private String workExperience;
     private String degree;
     private String koreanLevel;
 
@@ -28,10 +28,8 @@ public class UserResponse {
                 .nationality(u.getNationality())
                 .status(u.getStatus())
                 .bizCategory(u.getBizCategory())
-                .period(u.getPeriod())
-                .workExperience( // 기본값 0
-                        java.util.Optional.ofNullable(u.getWorkExperience()).orElse(0)
-                )
+                .estimatePeriod(u.getEstimatePeriod())
+                .workExperience(u.getWorkExperience())
                 .degree(u.getDegree())
                 .koreanLevel(u.getKoreanLevel())
                 .build();
