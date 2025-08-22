@@ -2,8 +2,10 @@ package mutsa.backend.BusinessDistrict.controller;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import mutsa.backend.BusinessDistrict.dto.BusinessGrade;
 import mutsa.backend.BusinessDistrict.dto.ppl.*;
 import mutsa.backend.BusinessDistrict.dto.sales.BusinessRankResponse;
+import mutsa.backend.BusinessDistrict.repository.BusinessRepository;
 import mutsa.backend.BusinessDistrict.service.BusinessService;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +17,7 @@ import java.util.List;
 @SecurityRequirement(name = "BearerAuth")
 public class BusinessController {
     private final BusinessService businessService;
+    private final BusinessRepository repo;
 
     /**
      * 매출
@@ -33,7 +36,7 @@ public class BusinessController {
      */
     @GetMapping("/people/topn")
     public List<BusinessTopn> getTopNDongAndTotalPpl() {
-        return businessService.getTopn();
+        return repo.findAllOrderByTotalPplDesc();
     }
     @GetMapping("/people/gender")
     public BusinessGender getGender(@RequestParam String dong){
@@ -50,5 +53,9 @@ public class BusinessController {
     @GetMapping("/people/day")
     public BusinessDay getDay(@RequestParam String dong){
         return businessService.getDay(dong);
+    }
+    @GetMapping("/grade")
+    public BusinessGrade getGrade (@RequestParam String dong){
+        return businessService.getGrade(dong);
     }
 }

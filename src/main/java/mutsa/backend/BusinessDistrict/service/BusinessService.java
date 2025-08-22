@@ -1,6 +1,7 @@
 package mutsa.backend.BusinessDistrict.service;
 
 import lombok.RequiredArgsConstructor;
+import mutsa.backend.BusinessDistrict.dto.BusinessGrade;
 import mutsa.backend.BusinessDistrict.dto.ppl.*;
 import mutsa.backend.BusinessDistrict.dto.sales.BusinessRankResponse;
 import mutsa.backend.BusinessDistrict.entity.BusinessDistrict;
@@ -100,7 +101,27 @@ public class BusinessService {
                 district.getPplSunday()
         );
     }
-    public List<BusinessTopn> getTopn() {
-        return repo.findAllOrderByTotalPplDesc();
+    public BusinessGrade getGrade(String dong){
+        BusinessDistrict district = repo.findByDong(dong)
+                .orElseThrow(()-> new RuntimeException("No dong-info"));
+        Long sales = district.getSalesAmount();
+        Long ppl = district.getTotalPpl();
+        Long closeSafety = (1-district.getPplAge10())*100; // 폐업 안전률
+        Long openRate = district.getPplAge20(); //개업률
+        Double score = 0.4*sales + 0.3*ppl + 0.2*closeSafety+0.1*openRate;
+        int grade;
+        if (score >= 80) {
+            grade = 1; // 매우 우수
+        } else if (score >= 65) {
+            grade = 2; // 우수
+        } else if (score >= 50) {
+            grade = 3; // 보통
+        } else if (score >= 35) {
+            grade = 4; // 미흡
+        } else {
+            grade = 5; // 열악
+        }
+        return new BusinessGrade(district.getDong(), grade);
     }
+
 }
