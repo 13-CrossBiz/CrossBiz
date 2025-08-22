@@ -44,7 +44,7 @@ public class Users {
 
     @Column(length = 50)
     private String workExperience; // 근무 경력(년수) – null 허용
-=
+
     @Column(length = 50)
     private String degree;
     @Column(length = 50)
