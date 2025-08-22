@@ -1,5 +1,6 @@
 package mutsa.backend.BusinessDistrict.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import mutsa.backend.BusinessDistrict.dto.BusinessPplResponse;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/business")
+@SecurityRequirement(name = "BearerAuth")
 public class BusinessController {
     private final BusinessService businessService;
     @GetMapping // 각 동의 매출 n순위 업종

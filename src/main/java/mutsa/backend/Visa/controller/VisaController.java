@@ -1,4 +1,5 @@
 package mutsa.backend.Visa.controller;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import mutsa.backend.Visa.dto.request.visa.BasicInfo;
 import mutsa.backend.Visa.dto.request.visa.VisaRequestDto;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/visa")
+@SecurityRequirement(name = "BearerAuth")
 public class VisaController {
     private final VisaService visaService;
     private final VisaPlaceService visaPlaceService;
