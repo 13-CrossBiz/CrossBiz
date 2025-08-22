@@ -1,5 +1,4 @@
 package mutsa.backend.BusinessDistrict.controller;
-
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import mutsa.backend.BusinessDistrict.dto.BusinessGrade;
@@ -8,7 +7,9 @@ import mutsa.backend.BusinessDistrict.dto.sales.BusinessRankResponse;
 import mutsa.backend.BusinessDistrict.repository.BusinessRepository;
 import mutsa.backend.BusinessDistrict.service.BusinessService;
 import org.springframework.web.bind.annotation.*;
-
+import mutsa.backend.BusinessDistrict.dto.response.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
@@ -19,6 +20,45 @@ public class BusinessController {
     private final BusinessService businessService;
     private final BusinessRepository repo;
 
+    /**
+     * 점포수
+     */
+    @GetMapping("/districts/{dong}")
+    public ResponseEntity<List<BusinessDistrictResponse>> list(@PathVariable String dong) {
+        return ResponseEntity.ok(businessService.listByDong(dong));
+    }
+
+    // 특정 동(dong)의 업종 분포 (예: [{category:"요식업", count:4}, ...])
+    @GetMapping("/districts/{dong}/distribution")
+    public ResponseEntity<List<CategoryCountResponse>> distribution(@PathVariable String dong) {
+        return ResponseEntity.ok(businessService.distributionByDong(dong));
+    }
+
+    // 특정 동(dong)의 개업/폐업률 (가중 평균) - 원형차트 데이터로 바로 사용 가능
+    @GetMapping("/districts/{dong}/ratios")
+    public ResponseEntity<RatioResponse> ratios(@PathVariable String dong) {
+        return ResponseEntity.ok(businessService.ratiosByDong(dong));
+    }
+
+    // 특정 동(dong)의 개업/폐업률 (백분위 계산결과)
+    @GetMapping("/districts/{dong}/ratios/pie")
+    public ResponseEntity<RatioPieResponse> ratioPie(@PathVariable String dong) {
+        return ResponseEntity.ok(businessService.ratioPieByDong(dong));
+    }
+
+
+    // 한 번에 내려받기 좋은 요약 (분포 + 개폐업률 + 총점포수)
+    @GetMapping("/districts/{dong}/summary")
+    public ResponseEntity<BusinessSummaryResponse> summary(@PathVariable String dong) {
+        return ResponseEntity.ok(businessService.summaryByDong(dong));
+    }
+
+    // CSV 업로드 (선택)
+    @PostMapping("/districts/import")
+    public ResponseEntity<String> importCsv(@RequestPart("file") MultipartFile file) {
+        int n = businessService.importCsv(file);
+        return ResponseEntity.ok("Imported rows: " + n);
+    }
     /**
      * 매출
      */

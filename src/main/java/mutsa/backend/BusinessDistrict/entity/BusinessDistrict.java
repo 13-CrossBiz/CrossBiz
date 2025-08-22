@@ -1,16 +1,26 @@
 package mutsa.backend.BusinessDistrict.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class BusinessDistrict {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long districtId;
+    //점포
+
+    // 점포 수
+    private Integer count;
+    // 개업률 / 폐업률 (0.0 ~ 100.0 가정)
+    private Double openRatio;
+    private Double closeRatio;
+    private String code;
     //매출
     private String category;
     private String dong;
