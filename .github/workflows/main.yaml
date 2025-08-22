@@ -9,6 +9,11 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GPT_API_KEY: ${{ secrets.GPT_API_KEY }}
+      GPT_URL: ${{ secrets.GPT_URL }}
+      DB_USERNAME: ${{ secrets.DB_USERNAME }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
     steps:
       - uses: actions/checkout@v4
@@ -46,8 +51,20 @@ jobs:
           username: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            set -e
+            sudo mkdir -p /etc/myapp
+            sudo tee /etc/myapp/backend.env > /dev/null << 'EOF'
+            GPT_API_KEY=${{ secrets.GPT_API_KEY }}
+            GPT_URL=${{ secrets.GPT_URL }}
+            DB_USERNAME=${{ secrets.DB_USERNAME }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            EOF
+            
+            sudo chmod 600 /etc/myapp/backend.env
+            sudo chown root:root /etc/myapp/backend.env
+    
             sudo systemctl daemon-reload
             sudo systemctl restart backend
-            sudo systemctl status backend --no-pager
+            sudo systemctl status backend --no-pager || true
 
 
