@@ -1,4 +1,4 @@
-package mutsa.backend.config;
+package mutsa.backend.Config;
 
 import lombok.RequiredArgsConstructor;
 import mutsa.backend.Users.service.CustomUserDetailsService;

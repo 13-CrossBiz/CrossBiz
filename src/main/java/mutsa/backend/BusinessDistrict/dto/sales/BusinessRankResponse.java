@@ -1,4 +1,4 @@
-package mutsa.backend.BusinessDistrict.dto;
+package mutsa.backend.BusinessDistrict.dto.sales;
 
 public record BusinessRankResponse(
         String dong,

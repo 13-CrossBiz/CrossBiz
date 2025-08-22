@@ -1,4 +1,4 @@
-package mutsa.backend.config.swagger;
+package mutsa.backend.Config.swagger;
 
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
