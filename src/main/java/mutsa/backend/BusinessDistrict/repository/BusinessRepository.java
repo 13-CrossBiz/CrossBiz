@@ -49,4 +49,5 @@ public interface BusinessRepository extends JpaRepository<BusinessDistrict, Long
             "FROM BusinessDistrict b ORDER BY b.totalPpl DESC")
     List<BusinessTopn> findAllOrderByTotalPplDesc();
     Optional<BusinessDistrict> findByDong(String dong);
+    Optional<BusinessDistrict> findFirstByDongAndCloseRatioIsNotNull(String dong);
 }

@@ -26,8 +26,10 @@ public class BusinessDistrict {
     private String dong;
     @Column(precision = 20, scale = 2,nullable = true)
     private Long salesAmount;
+    private Double minmaxSales;
     // 유동인구
     private Long totalPpl;
+    private Double minmaxPpl;
     private Long totalMale;
     private Long totalFemale;
 

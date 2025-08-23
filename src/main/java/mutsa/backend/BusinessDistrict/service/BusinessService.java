@@ -243,25 +243,17 @@ public class BusinessService {
         );
     }
     public BusinessGrade getGrade(String dong){
-        BusinessDistrict district = repo.findByDong(dong)
-                .orElseThrow(()-> new RuntimeException("No dong-info"));
-        Long sales = district.getSalesAmount();
-        Long ppl = district.getTotalPpl();
-        Long closeSafety = (1-district.getPplAge10())*100; // 폐업 안전률
-        Long openRate = district.getPplAge20(); //개업률
+        BusinessDistrict district = repo.findFirstByDongAndCloseRatioIsNotNull(dong)
+                .orElseThrow(() -> new RuntimeException("No dong-info with close_ratio"));
+
+        Double sales = district.getMinmaxSales();
+        Double ppl = district.getMinmaxPpl();
+        Double closeSafety = (1-district.getOpenRatio())*100; // 폐업 안전률
+        Double openRate = district.getOpenRatio(); //개업률
         Double score = 0.4*sales + 0.3*ppl + 0.2*closeSafety+0.1*openRate;
-        int grade;
-        if (score >= 80) {
-            grade = 1; // 매우 우수
-        } else if (score >= 65) {
-            grade = 2; // 우수
-        } else if (score >= 50) {
-            grade = 3; // 보통
-        } else if (score >= 35) {
-            grade = 4; // 미흡
-        } else {
-            grade = 5; // 열악
-        }
+
+        int grade = score >= 80 ? 1 :
+                    score >= 65 ? 2 : score >= 50 ? 3 : score >= 35 ? 4 : 5;
         return new BusinessGrade(district.getDong(), grade);
     }
 
