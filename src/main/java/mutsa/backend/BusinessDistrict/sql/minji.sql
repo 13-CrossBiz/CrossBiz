@@ -1,6 +1,6 @@
 
 INSERT INTO business_district(
-    district_id, category, close_ratio, code, count, dong, minmax_ppl, minmax_sales, open_ratio,
+    district_id, category, close_ratio, code, ranks, dong, minmax_ppl, minmax_sales, open_ratio,
     ppl_age10, ppl_age20, ppl_age30, ppl_age40, ppl_age50, ppl_age60,
     ppl_monday, ppl_tuesday, ppl_wednesday, ppl_thursday, ppl_friday, ppl_saturday, ppl_sunday,
     ppl_time0006, ppl_time0611, ppl_time1114, ppl_time1417, ppl_time1721, ppl_time2124,

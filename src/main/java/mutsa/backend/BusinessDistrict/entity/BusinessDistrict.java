@@ -27,6 +27,7 @@ public class BusinessDistrict {
     @Column(precision = 20, scale = 2,nullable = true)
     private Long salesAmount;
     private Double minmaxSales;
+    private Integer ranks;
     // 유동인구
     private Long totalPpl;
     private Double minmaxPpl;
