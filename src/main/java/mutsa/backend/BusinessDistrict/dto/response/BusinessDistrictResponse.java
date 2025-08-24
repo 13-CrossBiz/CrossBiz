@@ -2,7 +2,7 @@ package mutsa.backend.BusinessDistrict.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import mutsa.backend.BusinessDistrict.entity.BusinessDistrict;
+import mutsa.backend.BusinessDistrict.entity.BusinessShop;
 
 @Getter @Builder
 public class BusinessDistrictResponse {
@@ -14,9 +14,9 @@ public class BusinessDistrictResponse {
     private Double openRatio;
     private Double closeRatio;
 
-    public static BusinessDistrictResponse from(BusinessDistrict bd) {
+    public static BusinessDistrictResponse from(BusinessShop bd) {
         return BusinessDistrictResponse.builder()
-                .districtId(bd.getDistrictId())
+                .districtId(bd.getBusinshopId())
                 .code(bd.getCode())
                 .dong(bd.getDong())
                 .category(bd.getCategory())

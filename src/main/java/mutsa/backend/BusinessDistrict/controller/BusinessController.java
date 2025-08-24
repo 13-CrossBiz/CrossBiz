@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import mutsa.backend.BusinessDistrict.dto.BusinessGrade;
 import mutsa.backend.BusinessDistrict.dto.ppl.*;
 import mutsa.backend.BusinessDistrict.dto.sales.BusinessRankResponse;
-import mutsa.backend.BusinessDistrict.repository.BusinessRepository;
+import mutsa.backend.BusinessDistrict.repository.BusinessPPlRepository;
 import mutsa.backend.BusinessDistrict.service.BusinessService;
 import org.springframework.web.bind.annotation.*;
 import mutsa.backend.BusinessDistrict.dto.response.*;
@@ -18,7 +18,7 @@ import java.util.List;
 @SecurityRequirement(name = "BearerAuth")
 public class BusinessController {
     private final BusinessService businessService;
-    private final BusinessRepository repo;
+    private final BusinessPPlRepository repo;
 
     /**
      * 점포수
@@ -59,6 +59,7 @@ public class BusinessController {
         int n = businessService.importCsv(file);
         return ResponseEntity.ok("Imported rows: " + n);
     }
+
     /**
      * 매출
      */
@@ -76,7 +77,7 @@ public class BusinessController {
      */
     @GetMapping("/people/topn")
     public List<BusinessTopn> getTopNDongAndTotalPpl() {
-        return repo.findAllOrderByTotalPplDesc();
+        return repo.findTopnTotalPplPerDong();
     }
     @GetMapping("/people/gender")
     public BusinessGender getGender(@RequestParam String dong){

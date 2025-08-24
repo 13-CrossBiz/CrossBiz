@@ -5,8 +5,12 @@ import mutsa.backend.BusinessDistrict.dto.BusinessGrade;
 import mutsa.backend.BusinessDistrict.dto.ppl.*;
 import mutsa.backend.BusinessDistrict.dto.response.*;
 import mutsa.backend.BusinessDistrict.dto.sales.BusinessRankResponse;
-import mutsa.backend.BusinessDistrict.entity.BusinessDistrict;
-import mutsa.backend.BusinessDistrict.repository.BusinessRepository;
+import mutsa.backend.BusinessDistrict.entity.BusinessPPl;
+import mutsa.backend.BusinessDistrict.entity.BusinessSales;
+import mutsa.backend.BusinessDistrict.entity.BusinessShop;
+import mutsa.backend.BusinessDistrict.repository.BusinessPPlRepository;
+import mutsa.backend.BusinessDistrict.repository.BusinessSalesRepository;
+import mutsa.backend.BusinessDistrict.repository.BusinessShopRespository;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -23,18 +27,20 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 public class BusinessService {
-    private final BusinessRepository repo;
+    private final BusinessPPlRepository pplRepo;
+    private final BusinessSalesRepository salesRepo;
+    private final BusinessShopRespository shopRepo;
 
     @Transactional(readOnly = true)
     public List<BusinessDistrictResponse> listByDong(String dong) {
-        return repo.findAllByDong(dong).stream()
+        return shopRepo.findAllByDong(dong).stream()
                 .map(BusinessDistrictResponse::from)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
     public List<CategoryCountResponse> distributionByDong(String dong) {
-        List<Object[]> rows = repo.sumCountGroupByCategory(dong);
+        List<Object[]> rows = shopRepo.sumCountGroupByCategory(dong);
         return rows.stream().map(r ->
                 new CategoryCountResponse((String) r[0], ((Number) r[1]).intValue())
         ).collect(Collectors.toList());
@@ -47,11 +53,11 @@ public class BusinessService {
      */
     @Transactional(readOnly = true)
     public RatioResponse ratiosByDong(String dong) {
-        List<BusinessDistrict> all = repo.findAllByDong(dong);
+        List<BusinessShop> all = shopRepo.findAllByDong(dong);
         if (all.isEmpty()) return new RatioResponse(0.0, 0.0);
 
         long totalCount = all.stream()
-                .map(BusinessDistrict::getCount)
+                .map(BusinessShop::getCount)
                 .filter(Objects::nonNull)
                 .mapToLong(Integer::longValue)
                 .sum();
@@ -74,12 +80,12 @@ public class BusinessService {
 
     @Transactional(readOnly = true)
     public BusinessSummaryResponse summaryByDong(String dong) {
-        List<BusinessDistrict> all = repo.findAllByDong(dong);
+        List<BusinessShop> all = shopRepo.findAllByDong(dong);
         if (all.isEmpty()) {
             throw new IllegalArgumentException("해당 동의 데이터가 없습니다: " + dong);
         }
         int total = all.stream()
-                .map(BusinessDistrict::getCount)
+                .map(BusinessShop::getCount)
                 .filter(Objects::nonNull)
                 .mapToInt(Integer::intValue)
                 .sum();
@@ -135,7 +141,7 @@ public class BusinessService {
                 Double openRatio = Double.valueOf(t[4].trim());
                 Double closeRatio = Double.valueOf(t[5].trim());
 
-                BusinessDistrict bd = BusinessDistrict.builder()
+                BusinessShop bd = BusinessShop.builder()
                         .dong(dong)
                         .code(code)
                         .category(category)
@@ -143,7 +149,7 @@ public class BusinessService {
                         .openRatio(openRatio)
                         .closeRatio(closeRatio)
                         .build();
-                repo.save(bd);
+                shopRepo.save(bd);
                 inserted++;
             }
         } catch (Exception e) {
@@ -164,7 +170,7 @@ public class BusinessService {
         if (rank < 1) {
             throw new IllegalArgumentException("rank over 1");
         }
-        var row = repo.findNthByDongOrderBySalesDesc(dong, rank - 1);
+        var row = salesRepo.findNthByDongOrderBySalesDesc(dong, rank - 1);
         if (row == null) {
             throw new IllegalArgumentException("No data. dong=" + dong + ", rank=" + rank);
         }
@@ -177,10 +183,10 @@ public class BusinessService {
     }
 
     public List<BusinessRankResponse> getAll(String dong, int n) {
-        List<BusinessDistrict> rows = repo.findTopNByDong(dong, n);
+        List<BusinessSales> rows = salesRepo.findTopNByDong(dong, n);
         List<BusinessRankResponse> list = new ArrayList<>(rows.size());
         int r = 1;
-        for (BusinessDistrict row : rows) {
+        for (BusinessSales row : rows) {
             list.add(new BusinessRankResponse(
                     row.getDong(),
                     r++,
@@ -194,8 +200,7 @@ public class BusinessService {
      *유동인구
      */
     public BusinessGender getGender(String dong) {
-        BusinessDistrict district = repo.findByDong(dong)
-                .orElseThrow(() -> new RuntimeException("No dong-info"));
+        BusinessPPl district = pplRepo.findFirstByDong(dong);
         return new BusinessGender(
                 district.getDong(),
                 district.getTotalMale(),
@@ -203,8 +208,7 @@ public class BusinessService {
         );
     }
     public BusinessAge getAge(String dong) {
-        BusinessDistrict district = repo.findByDong(dong)
-                .orElseThrow(() -> new RuntimeException("No dong-info"));
+        BusinessPPl district = pplRepo.findFirstByDong(dong);
         return new BusinessAge(
                 district.getDong(),
                 district.getPplAge10(),
@@ -216,8 +220,7 @@ public class BusinessService {
         );
     }
     public BusinessTime getTime(String dong){
-        BusinessDistrict district = repo.findByDong(dong)
-                .orElseThrow(()-> new RuntimeException("No dong-info"));
+        BusinessPPl district = pplRepo.findFirstByDong(dong);
         return new BusinessTime(
                 district.getDong(),
                 district.getPplTime0006(),
@@ -229,8 +232,7 @@ public class BusinessService {
         );
     }
     public BusinessDay getDay(String dong){
-        BusinessDistrict district = repo.findByDong(dong)
-                .orElseThrow(()-> new RuntimeException("No dong-info"));
+        BusinessPPl district = pplRepo.findFirstByDong(dong);
         return new BusinessDay(
                 district.getDong(),
                 district.getPplMonday(),
@@ -243,18 +245,19 @@ public class BusinessService {
         );
     }
     public BusinessGrade getGrade(String dong){
-        BusinessDistrict district = repo.findFirstByDongAndCloseRatioIsNotNull(dong)
-                .orElseThrow(() -> new RuntimeException("No dong-info with close_ratio"));
+        BusinessPPl districtPPl = pplRepo.findFirstByDong(dong);
+        BusinessSales districtSales = salesRepo.findFirstByDong(dong);
+        BusinessShop districtShop = shopRepo.findFirstByDong(dong);
 
-        Double sales = district.getMinmaxSales();
-        Double ppl = district.getMinmaxPpl();
-        Double closeSafety = (1-district.getOpenRatio())*100; // 폐업 안전률
-        Double openRate = district.getOpenRatio(); //개업률
+        Double sales = districtSales.getMinmaxSales();
+        Double ppl = districtPPl.getMinmaxPpl();
+        Double closeSafety = (1-districtShop.getOpenRatio())*100; // 폐업 안전률
+        Double openRate = districtShop.getOpenRatio(); //개업률
         Double score = 0.4*sales + 0.3*ppl + 0.2*closeSafety+0.1*openRate;
 
         int grade = score >= 80 ? 1 :
                     score >= 65 ? 2 : score >= 50 ? 3 : score >= 35 ? 4 : 5;
-        return new BusinessGrade(district.getDong(), grade);
+        return new BusinessGrade(districtPPl.getDong(), grade);
     }
 
 }

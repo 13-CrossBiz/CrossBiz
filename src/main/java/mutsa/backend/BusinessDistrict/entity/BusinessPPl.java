@@ -9,26 +9,15 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BusinessDistrict {
+@Table(name="business_ppl")
+public class BusinessPPl {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long districtId;
-    //점포
-
-    // 점포 수
-    private Integer count;
-    // 개업률 / 폐업률 (0.0 ~ 100.0 가정)
-    private Double openRatio;
-    private Double closeRatio;
-    private String code;
-    //매출
-    private String category;
+    private Long businpplId;
+    private Integer time;
     private String dong;
-    @Column(precision = 20, scale = 2,nullable = true)
-    private Long salesAmount;
-    private Double minmaxSales;
-    private Integer ranks;
-    // 유동인구
+    private Long pplCount;
+
     private Long totalPpl;
     private Double minmaxPpl;
     private Long totalMale;
@@ -55,7 +44,4 @@ public class BusinessDistrict {
     private Long pplAge40;
     private Long pplAge50;
     private Long pplAge60;
-
-
-
 }
