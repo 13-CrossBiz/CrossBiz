@@ -15,9 +15,6 @@ import mutsa.backend.BusinessDistrict.repository.BusinessSalesRepository;
 import mutsa.backend.BusinessDistrict.repository.BusinessShopRespository;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,7 +23,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -320,5 +316,22 @@ public class BusinessService {
 
         return new BusinessGrade(districtPPl.getDong(), grade);
     }
-
+    public BusinessQuarter getQuarter(String dong){
+        BusinessPPl districtPPl = pplRepo.findFirstByDong(dong);
+        return new BusinessQuarter(
+                districtPPl.getDong(),
+                districtPPl.getPpl20222(),
+                districtPPl.getPpl20223(),
+                districtPPl.getPpl20224(),
+                districtPPl.getPpl20231(),
+                districtPPl.getPpl20232(),
+                districtPPl.getPpl20233(),
+                districtPPl.getPpl20234(),
+                districtPPl.getPpl20241(),
+                districtPPl.getPpl20242(),
+                districtPPl.getPpl20243(),
+                districtPPl.getPpl20244(),
+                districtPPl.getPpl20251()
+        );
+    }
 }

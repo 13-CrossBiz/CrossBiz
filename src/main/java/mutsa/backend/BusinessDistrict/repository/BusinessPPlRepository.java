@@ -1,11 +1,11 @@
 package mutsa.backend.BusinessDistrict.repository;
-import java.util.List;
+
+import mutsa.backend.BusinessDistrict.dto.ppl.BusinessTopn;
 import mutsa.backend.BusinessDistrict.entity.BusinessPPl;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import mutsa.backend.BusinessDistrict.dto.ppl.BusinessTopn;
-import org.springframework.data.repository.query.Param;
-import java.util.Optional;
+
+import java.util.List;
 
 public interface BusinessPPlRepository extends JpaRepository<BusinessPPl, Long> {
 

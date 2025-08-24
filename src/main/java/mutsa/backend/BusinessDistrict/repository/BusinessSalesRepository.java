@@ -1,6 +1,5 @@
 package mutsa.backend.BusinessDistrict.repository;
 
-import mutsa.backend.BusinessDistrict.entity.BusinessPPl;
 import mutsa.backend.BusinessDistrict.entity.BusinessSales;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

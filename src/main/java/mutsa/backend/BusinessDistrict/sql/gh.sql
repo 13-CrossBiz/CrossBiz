@@ -1,4 +1,4 @@
-INSERT INTO business_district
+INSERT INTO business_shop
 (dong, code, category, count, open_ratio, close_ratio)
 VALUES
     ('공덕동', '11440565', '한식음식점', 212, 5, 3),

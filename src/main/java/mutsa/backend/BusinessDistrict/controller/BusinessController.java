@@ -5,7 +5,6 @@ import mutsa.backend.BusinessDistrict.dto.BusinessGrade;
 import mutsa.backend.BusinessDistrict.dto.ppl.*;
 import mutsa.backend.BusinessDistrict.dto.sales.BusinessRankResponse;
 import mutsa.backend.BusinessDistrict.dto.shop.CategoryCountResponse;
-import mutsa.backend.BusinessDistrict.dto.shop.RatioPieResponse;
 import mutsa.backend.BusinessDistrict.dto.shop.TypeResponse;
 import mutsa.backend.BusinessDistrict.repository.BusinessPPlRepository;
 import mutsa.backend.BusinessDistrict.service.BusinessService;
@@ -82,6 +81,8 @@ public class BusinessController {
     public BusinessDay getDay(@RequestParam String dong){
         return businessService.getDay(dong);
     }
+    @GetMapping("/people/quarter")
+    public BusinessQuarter getQuarter(@RequestParam String dong) {return businessService.getQuarter(dong);}
     @GetMapping("/grade")
     public BusinessGrade getGrade (@RequestParam String dong){
         return businessService.getGrade(dong);
