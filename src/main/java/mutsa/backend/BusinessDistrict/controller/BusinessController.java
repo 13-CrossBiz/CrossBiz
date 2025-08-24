@@ -4,12 +4,13 @@ import lombok.RequiredArgsConstructor;
 import mutsa.backend.BusinessDistrict.dto.BusinessGrade;
 import mutsa.backend.BusinessDistrict.dto.ppl.*;
 import mutsa.backend.BusinessDistrict.dto.sales.BusinessRankResponse;
+import mutsa.backend.BusinessDistrict.dto.shop.CategoryCountResponse;
+import mutsa.backend.BusinessDistrict.dto.shop.RatioPieResponse;
+import mutsa.backend.BusinessDistrict.dto.shop.TypeResponse;
 import mutsa.backend.BusinessDistrict.repository.BusinessPPlRepository;
 import mutsa.backend.BusinessDistrict.service.BusinessService;
 import org.springframework.web.bind.annotation.*;
-import mutsa.backend.BusinessDistrict.dto.response.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
@@ -20,46 +21,31 @@ public class BusinessController {
     private final BusinessService businessService;
     private final BusinessPPlRepository repo;
 
-    /**
-     * 점포수
-     */
+    // 1) 특정 동(dong)의 업종 분포
     @GetMapping("/districts/{dong}")
-    public ResponseEntity<List<BusinessDistrictResponse>> list(@PathVariable String dong) {
-        return ResponseEntity.ok(businessService.listByDong(dong));
-    }
-
-    // 특정 동(dong)의 업종 분포 (예: [{category:"요식업", count:4}, ...])
-    @GetMapping("/districts/{dong}/distribution")
     public ResponseEntity<List<CategoryCountResponse>> distribution(@PathVariable String dong) {
         return ResponseEntity.ok(businessService.distributionByDong(dong));
     }
 
-    // 특정 동(dong)의 개업/폐업률 (가중 평균) - 원형차트 데이터로 바로 사용 가능
-    @GetMapping("/districts/{dong}/ratios")
-    public ResponseEntity<RatioResponse> ratios(@PathVariable String dong) {
-        return ResponseEntity.ok(businessService.ratiosByDong(dong));
+    // 2) 특정 동(dong)의 개업/폐업률 (백분위)
+    @GetMapping("/districts/{dong}/ratio")
+    public ResponseEntity<?> ratioPie(
+            @PathVariable String dong,
+            @RequestParam(name = "withNeighbors", defaultValue = "false") boolean withNeighbors,
+            @RequestParam(name = "k", defaultValue = "2") int k
+    ) {
+        if (!withNeighbors) {
+            return ResponseEntity.ok(businessService.ratioPieByDong(dong));
+        }
+        // 기준 동 + 인근 k개 동의 RatioPieResponse 맵 반환
+        return ResponseEntity.ok(businessService.ratioWithNeighborsMap(dong, k));
     }
 
-    // 특정 동(dong)의 개업/폐업률 (백분위 계산결과)
-    @GetMapping("/districts/{dong}/ratios/pie")
-    public ResponseEntity<RatioPieResponse> ratioPie(@PathVariable String dong) {
-        return ResponseEntity.ok(businessService.ratioPieByDong(dong));
+    // 3. 상권 유형 (표준편차 기반)
+    @GetMapping("/districts/{dong}/type")
+    public ResponseEntity<TypeResponse> marketType(@PathVariable String dong) {
+        return ResponseEntity.ok(businessService.TypeByDong(dong));
     }
-
-
-    // 한 번에 내려받기 좋은 요약 (분포 + 개폐업률 + 총점포수)
-    @GetMapping("/districts/{dong}/summary")
-    public ResponseEntity<BusinessSummaryResponse> summary(@PathVariable String dong) {
-        return ResponseEntity.ok(businessService.summaryByDong(dong));
-    }
-
-    // CSV 업로드 (선택)
-    @PostMapping("/districts/import")
-    public ResponseEntity<String> importCsv(@RequestPart("file") MultipartFile file) {
-        int n = businessService.importCsv(file);
-        return ResponseEntity.ok("Imported rows: " + n);
-    }
-
     /**
      * 매출
      */
@@ -72,6 +58,7 @@ public class BusinessController {
                                                     @RequestParam(defaultValue = "6") int limit) {
         return businessService.getAll(dong, limit);
     }
+
     /**
      * 유동인구
      */
