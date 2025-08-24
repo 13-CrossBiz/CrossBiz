@@ -37,8 +37,6 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/signup/basic", "/api/users/auth/login").permitAll()
                         //스웨거 설정
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
-                        // 게시글/댓글 조회는 공개(GET만)
-                        .requestMatchers(HttpMethod.GET, "/api/articles/**").permitAll()
                         // 그 외는 인증 필요
                         .anyRequest().authenticated()
                 )
