@@ -250,15 +250,15 @@ public class BusinessService {
 
         Double sales = districtSales.getMinmaxSales();
         Double ppl = districtPPl.getMinmaxPpl();
-        RatioResponse ratio = ratiosByDong(dong);
-        Double closeSafety = (1-ratio.getCloseRatio())*100; // 폐업 안전률
-        Double openRate = ratio.getOpenRatio(); //개업률
+        RatioPieResponse ratio = ratioPieByDong(dong);
+        Double closeSafety = (1-ratio.getCloseSharePct()*0.01)*100; // 폐업 안전률
+        Double openRate = ratio.getOpenSharePct(); //개업률
         Double score = 0.4*sales + 0.3*ppl + 0.2*closeSafety+0.1*openRate;
 
         int grade = score >= 80 ? 1 :
                     score >= 65 ? 2 : score >= 50 ? 3 : score >= 35 ? 4 : 5;
-        System.out.println(ratio.getCloseRatio());
-        System.out.println(ratio.getOpenRatio());
+        System.out.println(ratio.getCloseSharePct());
+        System.out.println(openRate);
         System.out.println(sales);
         System.out.println(ppl);
         System.out.println(closeSafety);
