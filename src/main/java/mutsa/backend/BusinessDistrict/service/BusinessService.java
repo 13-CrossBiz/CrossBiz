@@ -257,7 +257,31 @@ public class BusinessService {
 
         int grade = score >= 80 ? 1 :
                     score >= 65 ? 2 : score >= 50 ? 3 : score >= 35 ? 4 : 5;
+        System.out.println(sales);
+        System.out.println(ppl);
+        System.out.println(closeSafety);
+        System.out.println(openRate);
+        System.out.println(score);
+        System.out.println("minji:" + score);
         return new BusinessGrade(districtPPl.getDong(), grade);
+    }
+    public BusinessQuarter getQuarter(String dong){
+        BusinessPPl districtPPl = pplRepo.findFirstByDong(dong);
+        return new BusinessQuarter(
+                districtPPl.getDong(),
+                districtPPl.getPpl20222(),
+                districtPPl.getPpl20223(),
+                districtPPl.getPpl20224(),
+                districtPPl.getPpl20231(),
+                districtPPl.getPpl20232(),
+                districtPPl.getPpl20233(),
+                districtPPl.getPpl20234(),
+                districtPPl.getPpl20241(),
+                districtPPl.getPpl20242(),
+                districtPPl.getPpl20243(),
+                districtPPl.getPpl20244(),
+                districtPPl.getPpl20251()
+        );
     }
 
 }
