@@ -12,7 +12,7 @@ public interface BusinessSalesRepository extends JpaRepository <BusinessSales, L
 
     @Query(value = """
         SELECT *
-        FROM business_district
+        FROM business_sales
         WHERE dong = :dong
         ORDER BY sales_amount DESC
         LIMIT 1 OFFSET :offset
@@ -23,7 +23,7 @@ public interface BusinessSalesRepository extends JpaRepository <BusinessSales, L
     );
     @Query(value = """
         SELECT *
-        FROM business_district
+        FROM business_sales
         WHERE dong = :dong
         ORDER BY sales_amount DESC
         LIMIT :limit
