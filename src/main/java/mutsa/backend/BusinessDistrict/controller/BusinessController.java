@@ -82,8 +82,6 @@ public class BusinessController {
     public BusinessDay getDay(@RequestParam String dong){
         return businessService.getDay(dong);
     }
-    @GetMapping("/people/quarter")
-    public BusinessQuarter getQuarter(@RequestParam String dong) {return businessService.getQuarter(dong);}
     @GetMapping("/grade")
     public BusinessGrade getGrade (@RequestParam String dong){
         return businessService.getGrade(dong);

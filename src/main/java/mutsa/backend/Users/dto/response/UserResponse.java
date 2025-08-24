@@ -19,6 +19,9 @@ public class UserResponse {
     private String degree;
     private String koreanLevel;
 
+    private String accessToken;
+
+    // 토근 없는 버전
     public static UserResponse from(Users u) {
         return UserResponse.builder()
                 .userId(u.getUserId())
@@ -32,6 +35,25 @@ public class UserResponse {
                 .workExperience(u.getWorkExperience())
                 .degree(u.getDegree())
                 .koreanLevel(u.getKoreanLevel())
+                .accessToken(null)
+                .build();
+    }
+
+    // 토큰 포함 버전
+    public static UserResponse from(Users u, String token) {
+        return UserResponse.builder()
+                .userId(u.getUserId())
+                .loginId(u.getLoginId())
+                .name(u.getName())
+                .age(u.getAge())
+                .nationality(u.getNationality())
+                .status(u.getStatus())
+                .bizCategory(u.getBizCategory())
+                .estimatePeriod(u.getEstimatePeriod())
+                .workExperience(u.getWorkExperience())
+                .degree(u.getDegree())
+                .koreanLevel(u.getKoreanLevel())
+                .accessToken(token) // 👈 토큰 포함
                 .build();
     }
 }

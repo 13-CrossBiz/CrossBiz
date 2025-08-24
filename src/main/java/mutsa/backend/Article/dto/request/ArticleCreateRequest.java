@@ -8,4 +8,6 @@ import lombok.NoArgsConstructor;
 public class ArticleCreateRequest {
     @NotBlank private String name;    // 제목 필드명: name
     @NotBlank private String content;
+    private String category;
+    private String businessType;
 }

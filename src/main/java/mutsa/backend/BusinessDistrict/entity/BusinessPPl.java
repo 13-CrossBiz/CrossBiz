@@ -16,25 +16,12 @@ public class BusinessPPl {
     private Long businpplId;
     private Integer time;
     private String dong;
+    private Long pplCount;
 
     private Long totalPpl;
     private Double minmaxPpl;
     private Long totalMale;
     private Long totalFemale;
-
-    private Long ppl20222;
-    private Long ppl20223;
-    private Long ppl20224;
-    private Long ppl20231;
-    private Long ppl20232;
-    private Long ppl20233;
-    private Long ppl20234;
-    private Long ppl20241;
-    private Long ppl20242;
-    private Long ppl20243;
-    private Long ppl20244;
-    private Long ppl20251;
-
 
     private Long pplTime0006;
     private Long pplTime0611;

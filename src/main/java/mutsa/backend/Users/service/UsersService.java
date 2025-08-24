@@ -1,5 +1,6 @@
 package mutsa.backend.Users.service;
 import lombok.RequiredArgsConstructor;
+import mutsa.backend.Users.dto.request.UserProfileUpdateRequest;
 import mutsa.backend.Users.dto.request.UserSignupBasicRequest;
 import mutsa.backend.Users.dto.request.UserSignupDetailRequest;
 import mutsa.backend.Users.entity.Users;
@@ -45,6 +46,26 @@ public class UsersService {
         if (req.getKoreanLevel() != null)       user.setKoreanLevel(req.getKoreanLevel());
 
         return user; // dirty checking으로 업데이트 반영
+    }
+
+    @Transactional
+    public Users updateProfile(Long userId, UserProfileUpdateRequest req) {
+        Users u = usersRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+
+        // 9개 필드만 갱신
+        if (req.getName() != null)            u.setName(req.getName());
+        if (req.getAge() != null)             u.setAge(req.getAge());
+        if (req.getNationality() != null)     u.setNationality(req.getNationality());
+        if (req.getStatus() != null)          u.setStatus(req.getStatus());
+
+        if (req.getBizCategory() != null)     u.setBizCategory(req.getBizCategory());
+        if (req.getEstimatePeriod() != null)  u.setEstimatePeriod(req.getEstimatePeriod());
+        if (req.getWorkExperience() != null)  u.setWorkExperience(req.getWorkExperience());
+        if (req.getDegree() != null)          u.setDegree(req.getDegree());
+        if (req.getKoreanLevel() != null)     u.setKoreanLevel(req.getKoreanLevel());
+
+        return u; // flush 시점에 반영됨
     }
 
     public Users getById(Long id) {
