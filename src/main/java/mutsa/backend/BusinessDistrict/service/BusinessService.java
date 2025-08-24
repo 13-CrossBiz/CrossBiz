@@ -247,16 +247,18 @@ public class BusinessService {
     public BusinessGrade getGrade(String dong){
         BusinessPPl districtPPl = pplRepo.findFirstByDong(dong);
         BusinessSales districtSales = salesRepo.findFirstByDong(dong);
-        BusinessShop districtShop = shopRepo.findFirstByDong(dong);
 
         Double sales = districtSales.getMinmaxSales();
         Double ppl = districtPPl.getMinmaxPpl();
-        Double closeSafety = (1-districtShop.getOpenRatio())*100; // 폐업 안전률
-        Double openRate = districtShop.getOpenRatio(); //개업률
+        RatioResponse ratio = ratiosByDong(dong);
+        Double closeSafety = (1-ratio.getCloseRatio())*100; // 폐업 안전률
+        Double openRate = ratio.getOpenRatio(); //개업률
         Double score = 0.4*sales + 0.3*ppl + 0.2*closeSafety+0.1*openRate;
 
         int grade = score >= 80 ? 1 :
                     score >= 65 ? 2 : score >= 50 ? 3 : score >= 35 ? 4 : 5;
+        System.out.println(ratio.getCloseRatio());
+        System.out.println(ratio.getOpenRatio());
         System.out.println(sales);
         System.out.println(ppl);
         System.out.println(closeSafety);
