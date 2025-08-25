@@ -227,16 +227,35 @@ public class BusinessService {
     }
     public BusinessAge getAge(String dong) {
         BusinessPPl district = pplRepo.findFirstByDong(dong);
+        Long age10 = district.getPplAge10();
+        Long age20 = district.getPplAge20();
+        Long age30 = district.getPplAge30();
+        Long age40 = district.getPplAge40();
+        Long age50 = district.getPplAge50();
+        Long age60 = district.getPplAge60();
+        long sum = age10 + age20 + age30 + age40 + age50 + age60;
+        if (sum == 0) {
+            return new BusinessAge(district.getDong(), 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+        }
+
+        double pct10 = age10 * 100.0 / sum;
+        double pct20 = age20 * 100.0 / sum;
+        double pct30 = age30 * 100.0 / sum;
+        double pct40 = age40 * 100.0 / sum;
+        double pct50 = age50 * 100.0 / sum;
+        double pct60 = age60 * 100.0 / sum;
+
         return new BusinessAge(
                 district.getDong(),
-                district.getPplAge10(),
-                district.getPplAge20(),
-                district.getPplAge30(),
-                district.getPplAge40(),
-                district.getPplAge50(),
-                district.getPplAge60()
+                Math.round(pct10 * 10.0) / 10.0,
+                Math.round(pct20 * 10.0) / 10.0,
+                Math.round(pct30 * 10.0) / 10.0,
+                Math.round(pct40 * 10.0) / 10.0,
+                Math.round(pct50 * 10.0) / 10.0,
+                Math.round(pct60 * 10.0) / 10.0
         );
     }
+
     public BusinessTime getTime(String dong){
         BusinessPPl district = pplRepo.findFirstByDong(dong);
         return new BusinessTime(
