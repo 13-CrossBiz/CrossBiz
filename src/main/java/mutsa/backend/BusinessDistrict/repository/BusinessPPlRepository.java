@@ -8,7 +8,8 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface BusinessPPlRepository extends JpaRepository<BusinessPPl, Long> {
-
+    @Query("SELECT DISTINCT b.dong FROM BusinessPPl b")
+    List<String> findAllDistinctDongs();
 
     @Query("SELECT b.dong AS dong, b.totalPpl AS totalPpl " +
             "FROM BusinessPPl b WHERE b.totalPpl = (SELECT MAX(bp.totalPpl) FROM BusinessPPl bp WHERE bp.dong = b.dong)")

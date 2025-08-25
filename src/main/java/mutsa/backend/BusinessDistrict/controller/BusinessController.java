@@ -7,6 +7,7 @@ import mutsa.backend.BusinessDistrict.dto.sales.BusinessRankResponse;
 import mutsa.backend.BusinessDistrict.dto.shop.CategoryCountResponse;
 import mutsa.backend.BusinessDistrict.dto.shop.RatioPieResponse;
 import mutsa.backend.BusinessDistrict.dto.shop.TypeResponse;
+import mutsa.backend.BusinessDistrict.entity.BusinessPPl;
 import mutsa.backend.BusinessDistrict.repository.BusinessPPlRepository;
 import mutsa.backend.BusinessDistrict.service.BusinessService;
 import org.springframework.web.bind.annotation.*;
@@ -87,5 +88,9 @@ public class BusinessController {
     @GetMapping("/grade")
     public BusinessGrade getGrade (@RequestParam String dong){
         return businessService.getGrade(dong);
+    }
+    @GetMapping("/grade/all")
+    public List<BusinessGrade> getAllGrade(){
+        return businessService.getAllGrade();
     }
 }

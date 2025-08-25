@@ -330,4 +330,10 @@ public class BusinessService {
                 districtPPl.getPpl20251()
         );
     }
+    public List<BusinessGrade> getAllGrade(){
+        List<String> dongList = pplRepo.findAllDistinctDongs();
+        return dongList.stream()
+                .map(this::getGrade)
+                .collect(Collectors.toList());
+    }
 }
