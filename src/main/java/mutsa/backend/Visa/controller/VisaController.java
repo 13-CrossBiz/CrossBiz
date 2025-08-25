@@ -1,10 +1,7 @@
 package mutsa.backend.Visa.controller;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import mutsa.backend.Visa.dto.request.visa.BasicInfo;
-import mutsa.backend.Visa.dto.request.visa.VisaRequestDto;
-import mutsa.backend.Visa.dto.request.visa.WithVisaInfo;
-import mutsa.backend.Visa.dto.request.visa.WithoutVisaInfo;
+import mutsa.backend.Visa.dto.request.visa.*;
 import mutsa.backend.Visa.dto.response.NearPlaceDto;
 import mutsa.backend.Visa.dto.response.VisaHistory;
 import mutsa.backend.Visa.entity.Visa;
@@ -25,7 +22,6 @@ public class VisaController {
     private final VisaService visaService;
     private final VisaPlaceService visaPlaceService;
     private final VisaRepository visaRepository;
-
 
     @GetMapping("/place")
     public ResponseEntity<List<NearPlaceDto>> calcululateDistance(
