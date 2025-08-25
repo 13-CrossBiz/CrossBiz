@@ -5,7 +5,6 @@ import mutsa.backend.BusinessDistrict.dto.BusinessGrade;
 import mutsa.backend.BusinessDistrict.dto.ppl.*;
 import mutsa.backend.BusinessDistrict.dto.sales.BusinessRankResponse;
 import mutsa.backend.BusinessDistrict.dto.shop.CategoryCountResponse;
-import mutsa.backend.BusinessDistrict.dto.shop.RatioPieResponse;
 import mutsa.backend.BusinessDistrict.dto.shop.TypeResponse;
 import mutsa.backend.BusinessDistrict.entity.BusinessPPl;
 import mutsa.backend.BusinessDistrict.repository.BusinessPPlRepository;

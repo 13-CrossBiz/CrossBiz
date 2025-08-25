@@ -15,7 +15,9 @@ import mutsa.backend.BusinessDistrict.repository.BusinessSalesRepository;
 import mutsa.backend.BusinessDistrict.repository.BusinessShopRespository;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -28,6 +30,7 @@ public class BusinessService {
     private final BusinessPPlRepository pplRepo;
     private final BusinessSalesRepository salesRepo;
     private final BusinessShopRespository shopRepo;
+
 
     /**
      *점포
@@ -177,6 +180,7 @@ public class BusinessService {
         }
         return result;
     }
+
     /**
      *매출
      */

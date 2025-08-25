@@ -2,6 +2,7 @@ package mutsa.backend.Article.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import mutsa.backend.Article.repository.CommentRepository;
 import mutsa.backend.Users.dto.UserDTO;
 import mutsa.backend.Article.dto.request.*;
 import mutsa.backend.Article.dto.response.*;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ArticleController {
     private final ArticleService articleService;
+    private final CommentRepository commentRepository;
 
     // 생성
     @PostMapping
@@ -24,29 +26,42 @@ public class ArticleController {
             @AuthenticationPrincipal UserDTO principal,
             @Valid @RequestBody ArticleCreateRequest req) {
         Article saved = articleService.create(principal.getUserId(), req);
-        return ResponseEntity.ok(ArticleResponse.from(saved));
+        long commentCount = 0L; // 새 글은 0
+        return ResponseEntity.ok(ArticleResponse.from(saved, commentCount));
     }
 
-    // 목록 (hot=true면 좋아요순)
+    // 목록 조회
     @GetMapping
-    public ResponseEntity<Page<ArticleResponse>> list(
+    public Page<ArticleResponse> list(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "false") boolean hot) {
-        var result = articleService.list(page, size, hot)
-                .map(ArticleResponse::from);
-        return ResponseEntity.ok(result);
+            @RequestParam(defaultValue = "false") boolean hot,
+            @RequestParam(required = false) String q //검색어
+    ) {
+        if (q != null && !q.isBlank()) {
+            return articleService.searchByName(page, size, hot, q);
+        }
+        return articleService.list(page, size, hot);
     }
 
-    // 단건 조회 (로그인시 최초 1회만 조회수 +1)
+    // 단건 조회
     @GetMapping("/{id}")
-    public ResponseEntity<ArticleResponse> get(
+    public ArticleResponse getOne(
             @PathVariable Long id,
-            @AuthenticationPrincipal UserDTO principal
+            @AuthenticationPrincipal(expression = "userId") Long userId // 구현에 맞춰 추출
     ) {
-        Long viewerUserId = (principal == null ? null : principal.getUserId());
-        var a = articleService.getAndIncreaseViewIfFirst(id, viewerUserId);
-        return ResponseEntity.ok(ArticleResponse.from(a));
+        return articleService.getAndIncreaseViewIfFirst(id, userId);
+    }
+
+    // 내 게시물 조회
+    @GetMapping("/me")
+    public Page<ArticleResponse> myArticles(
+            @AuthenticationPrincipal UserDTO principal,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "false") boolean hot
+    ) {
+        return articleService.listByAuthor(principal.getUserId(), page, size, hot);
     }
 
     // 수정
@@ -56,7 +71,8 @@ public class ArticleController {
             @AuthenticationPrincipal UserDTO principal,
             @RequestBody ArticleUpdateRequest req) {
         var a = articleService.update(id, principal.getUserId(), req);
-        return ResponseEntity.ok(ArticleResponse.from(a));
+        long commentCount = commentRepository.countByArticle_ArticleId(id);
+        return ResponseEntity.ok(ArticleResponse.from(a, commentCount));
     }
 
     // 삭제(물리)
@@ -74,7 +90,8 @@ public class ArticleController {
             @PathVariable Long id,
             @AuthenticationPrincipal UserDTO principal) {
         var a = articleService.like(id, principal.getUserId());
-        return ResponseEntity.ok(ArticleResponse.from(a));
+        long commentCount = commentRepository.countByArticle_ArticleId(id);
+        return ResponseEntity.ok(ArticleResponse.from(a, commentCount));
     }
 
     // 좋아요 취소 (좋아요 했던 유저만 감소)
@@ -83,6 +100,7 @@ public class ArticleController {
             @PathVariable Long id,
             @AuthenticationPrincipal UserDTO principal) {
         var a = articleService.unlike(id, principal.getUserId());
-        return ResponseEntity.ok(ArticleResponse.from(a));
+        long commentCount = commentRepository.countByArticle_ArticleId(id);
+        return ResponseEntity.ok(ArticleResponse.from(a, commentCount));
     }
 }

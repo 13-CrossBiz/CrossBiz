@@ -20,6 +20,12 @@ public class Article {
     @JoinColumn(name = "user_id")
     private Users user; // 작성자 (users 1:N)
 
+    @Column(length = 50)
+    private String category;
+
+    @Column(name = "business_type", length = 50)
+    private String businessType;
+
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
