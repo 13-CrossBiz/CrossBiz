@@ -14,7 +14,8 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // 모든 경로 허용
-                        .allowedOrigins("http://localhost:3000", "https://crossbiz.store") // 허용할 도메인
+                        .allowedOrigins("http://localhost:3000", "https://crossbiz.store", "https://wwww.crossbiz.cloud/**"
+                                       , "https://crossbiz.cloud", "https://cross-biz-fe.vercel.app/") // 허용할 도메인
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowCredentials(true); // 인증정보(쿠키 등) 허용 여부
             }
