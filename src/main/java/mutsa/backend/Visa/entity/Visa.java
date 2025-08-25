@@ -27,10 +27,4 @@ public class Visa {
     private String warning;
     private String description;
     private LocalDateTime createdAt;
-    //user
-    private String expectedBusinessType;
-    private Boolean hasIntellectualProperty;
-    private Long businessFund;
-    private Double oasisScore;
-    private WithVisaInfo withVisaInfo;
 }
