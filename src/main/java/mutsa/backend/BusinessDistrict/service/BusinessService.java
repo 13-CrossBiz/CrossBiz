@@ -328,11 +328,10 @@ public class BusinessService {
                         0.2 * closeSafety +
                         0.1 * openRate;
 
-        int grade = score >= 80 ? 1 :
-                score >= 65 ? 2 :
-                        score >= 50 ? 3 :
-                                score >= 35 ? 4 : 5;
-
+        int grade = score >= 35 ? 1 :
+                score >= 29.4 ? 2 :
+                        score >= 28 ? 3 :
+                                score >= 26 ? 4 : 5;
         return new BusinessGrade(districtPPl.getDong(), grade);
     }
     public BusinessQuarter getQuarter(String dong){
