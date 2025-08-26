@@ -16,8 +16,8 @@
 | 이름 | 역할 | GitHub |
 |------|------|--------|
 | 장민지 | 백엔드 | [@Rossenzii](https://github.com/Rossenzii) |
-| 이광휘 | 백엔드 | [@kimchulsoo](https://github.com/20203079) |
-| 안준석 | 프론트엔드 | [@lee0younghee](https://github.com/BeJunseok) |
+| 이광휘 | 백엔드 | [@20203079](https://github.com/20203079) |
+| 안준석 | 프론트엔드 | [@BeJunseok](https://github.com/BeJunseok) |
 | 김지윤 | 프론트엔드 | [@parkjihoon](https://github.com/parkjihoon) |
 
 
