@@ -18,7 +18,7 @@
 | 장민지 | 백엔드 | [@Rossenzii](https://github.com/Rossenzii) |
 | 이광휘 | 백엔드 | [@20203079](https://github.com/20203079) |
 | 안준석 | 프론트엔드 | [@BeJunseok](https://github.com/BeJunseok) |
-| 김지윤 | 프론트엔드 | [@parkjihoon](https://github.com/parkjihoon) |
+| 김지윤 | 프론트엔드 | [@jiyun1122](https://github.com/jiyun1122) |
 
 
 ---
@@ -33,8 +33,8 @@
 
 ### 💡 주요 기능
 
-### 사용자 기능
 - **토큰 기반 회원가입 및 로그인**
 - **Open ai를 활용한 사용자 데이터 기반 비자 매칭**
 - **마포구 내 상권 입지 분석과 시각화**
-- **세무 캘린더를 통한 세무 일정 **
+- **세무 캘린더를 통한 세무 일정 열람**
+- **창업자, 예비 창업자 간의 네트워킹을 위한 커뮤니티 기능**
